@@ -76,6 +76,10 @@ const Quiz = () => {
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       {currentQuestionIndex < questions.length ? (
         <Card className="bg-white shadow-lg rounded-lg p-6 w-96 lg:w-[90%]">
+          {/* Progress Tracker: Shows current question number out of total */}
+          <div className="text-center text-lg font-semibold mb-4">
+            Question {currentQuestionIndex + 1} out of {questions.length}
+          </div>
           <Question
             question={questions[currentQuestionIndex]}
             selectedAnswer={selectedAnswers[currentQuestionIndex]} // Pass the selected answer for the current question
