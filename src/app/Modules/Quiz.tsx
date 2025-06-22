@@ -8,6 +8,8 @@ import questionsData from '../../../questions.json'; // Import your JSON file he
 import { useRouter } from 'next/navigation';
 import { Card } from '../components/ui/card'; // Importing Card component
 import { Button } from '../components/ui/button'; // Importing Button component
+import Link from 'next/link';
+// import { Link } from 'lucide-react';
 
 const Quiz = () => {
   const router = useRouter();
@@ -73,41 +75,45 @@ const Quiz = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-indigo-100 via-white to-pink-100 px-4">
+      
       {currentQuestionIndex < questions.length ? (
-        <Card className="bg-white shadow-lg rounded-lg p-6 w-96 lg:w-[90%]">
-          {/* Progress Tracker: Shows current question number out of total */}
-          <div className="text-center text-lg font-semibold mb-4">
-            Question {currentQuestionIndex + 1} out of {questions.length}
+        <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-xl">
+          {/* Progress */}
+          <div className="text-center text-xl font-bold text-indigo-800 mb-6">
+            Question {currentQuestionIndex + 1} of {questions.length}
           </div>
+
           <Question
             question={questions[currentQuestionIndex]}
-            selectedAnswer={selectedAnswers[currentQuestionIndex]} // Pass the selected answer for the current question
+            selectedAnswer={selectedAnswers[currentQuestionIndex]}
             onAnswer={handleAnswer}
             onNext={handleNext}
             onPrevious={handlePrevious}
             isLastQuestion={currentQuestionIndex === questions.length - 1}
           />
-          <div className="flex justify-between mt-4">
+
+          <div className="flex justify-between mt-8">
             <Button
               onClick={handlePrevious}
               disabled={currentQuestionIndex === 0}
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 disabled:bg-gray-200 "
+              className="px-6 py-3 text-base disabled:bg-gray-300  hover:bg-indigo-800/80 hover:text-white hover:shadow-xl hover:scale-105 transition-all ease-in-out bg-white shadow-md"
             >
               Previous
             </Button>
             <Button
               onClick={handleNext}
-              className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
+              className="px-6 py-3 text-base  hover:bg-indigo-800/80 hover:text-white hover:shadow-xl hover:scale-105 transition-all ease-in-out bg-white shadow-md"
             >
               {currentQuestionIndex === questions.length - 1 ? 'Submit' : 'Next'}
             </Button>
           </div>
-        </Card>
+        </div>
       ) : (
         <Result />
       )}
     </div>
+
   );
 };
 

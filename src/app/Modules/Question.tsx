@@ -1,62 +1,62 @@
-'use client';
-import React from 'react';
+"use client";
+
+import React from "react";
+import { Button } from "@/components/ui/button";
 
 interface QuestionProps {
   question: {
     question: string;
     answers: string[];
   };
-  selectedAnswer: string | undefined; // Allow undefined for unselected state
+  selectedAnswer: string | undefined;
   onAnswer: (answer: string) => void;
   onNext: () => void;
   onPrevious: () => void;
   isLastQuestion: boolean;
 }
 
+// ✅ Robust HTML entity decoder for numeric & named entities
+export function decodeHTMLEntities(str: string) {
+  if (typeof window === "undefined") return str; // SSR safety
+  const doc = new DOMParser().parseFromString(str, "text/html");
+  return doc.documentElement.textContent || "";
+}
+
 const Question: React.FC<QuestionProps> = ({
   question,
   selectedAnswer,
   onAnswer,
-  onNext,
-  onPrevious,
-  isLastQuestion,
 }) => {
   const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onAnswer(e.target.value); // Call the onAnswer function passed as a prop
+    onAnswer(e.target.value);
   };
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">{question.question}</h2>
-      <div className="flex flex-col">
+      <h2 className="text-2xl font-bold text-indigo-800 mb-6">
+        {decodeHTMLEntities(question.question)}
+      </h2>
+      <div className="flex flex-col space-y-4">
         {question.answers.map((answer, index) => (
-          <label key={index} className="mb-2">
+          <label
+            key={index}
+            className={`flex items-center p-4 rounded-lg border cursor-pointer transition ${
+              selectedAnswer === answer
+                ? "border-indigo-600 bg-indigo-50"
+                : "border-gray-300 hover:border-indigo-400"
+            }`}
+          >
             <input
               type="radio"
               name="answer"
               value={answer}
-              checked={selectedAnswer === answer} // Bind checked state to the selected answer
+              checked={selectedAnswer === answer}
               onChange={handleAnswerChange}
-              className="mr-2"
+              className="mr-3"
             />
-            {answer}
+            <span>{decodeHTMLEntities(answer)}</span>
           </label>
         ))}
-      </div>
-      <div className="flex justify-between mt-4">
-        {/* <button
-          onClick={onPrevious}
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
-          disabled={false}
-        >
-          Previous
-        </button>
-        <button
-          onClick={onNext}
-          className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
-        >
-          {isLastQuestion ? 'Submit' : 'Next'}
-        </button> */}
       </div>
     </div>
   );
